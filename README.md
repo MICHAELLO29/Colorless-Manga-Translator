@@ -18,7 +18,7 @@
 
 ## 🚀 **How It Works: The Magic Pipeline**
 
-```
+```mermaid
 flowchart TD
     A[🖼️ Input Manga Page] --> B[🔍 Detect Speech Bubbles (YOLOv5)]
     B --> C[📝 Extract Japanese Text (Manga OCR)]
