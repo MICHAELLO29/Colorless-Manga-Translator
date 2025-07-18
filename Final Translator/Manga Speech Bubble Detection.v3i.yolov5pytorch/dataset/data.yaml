@@ -1,0 +1,11 @@
+# Paths are now relative to the yolov5/ directory.
+# The '../' tells the script to go UP one directory from where it's running.
+train: ../dataset/train/images
+val: ../dataset/valid/images
+test: ../dataset/test/images
+
+# IMPORTANT: Make sure your number of classes is correct.
+# If you only have 'bubble', then nc should be 1.
+nc: 2
+
+names: ['Manga Speech Bubble Detection - v2 2024-04-06 6-40pm', 'bubble']
