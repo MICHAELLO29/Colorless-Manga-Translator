@@ -18,15 +18,28 @@
 
 ## 🚀 **How It Works: The Magic Pipeline**
 
-```mermaid
-flowchart TD
-    A[🖼️ Input Manga Page] --> B[🔍 Detect Speech Bubbles (YOLOv5)]
-    B --> C[📝 Extract Japanese Text (Manga OCR)]
-    C --> D[🌐 Translate to English (Google Gemini API)]
-    D --> E[🧹 Clean Bubble (Inpainting)]
-    E --> F[✍️ Typeset English Text]
-    F --> G[📄 Output: Translated Manga Page]
-```
+Follow these steps to understand how the Colorless-Manga-Translator processes your manga pages:
+
+1. **🖼️ Input Manga Page**
+   - Place your black-and-white manga image(s) in the `Final Translator/manga pages/` folder.
+
+2. **🔍 Detect Speech Bubbles (YOLOv5)**
+   - The tool uses a custom-trained YOLOv5 model to automatically find and outline all speech bubbles in each manga page.
+
+3. **📝 Extract Japanese Text (Manga OCR)**
+   - For each detected bubble, the script uses Manga OCR to read and extract the Japanese text, even if it's handwritten or stylized.
+
+4. **🌐 Translate to English (Google Gemini API)**
+   - The extracted Japanese text is sent to the Google Gemini API, which returns a natural, context-aware English translation.
+
+5. **🧹 Clean Bubble (Inpainting)**
+   - The original Japanese text is erased from the bubble using inpainting techniques, leaving a clean white space for the new text.
+
+6. **✍️ Typeset English Text**
+   - The translated English text is drawn into the cleaned bubble using a manga-style font, aiming for a natural and readable look.
+
+7. **📄 Output: Translated Manga Page**
+   - The final, fully translated and typeset manga page is saved in the `Final Translator/output/` folder, ready to read or share!
 
 ---
 
