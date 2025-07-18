@@ -18,14 +18,14 @@
 
 ## 🚀 **How It Works: The Magic Pipeline**
 
-```mermaid
+```
 flowchart TD
-    A[Input Manga Page] --> B[Detect Speech Bubbles (YOLOv5)]
-    B --> C[Extract Japanese Text (Manga OCR)]
-    C --> D[Translate to English (Google Gemini API)]
-    D --> E[Clean Bubble (Inpainting)]
-    E --> F[Typeset English Text]
-    F --> G[Output: Translated Manga Page]
+    A[🖼️ Input Manga Page] --> B[🔍 Detect Speech Bubbles (YOLOv5)]
+    B --> C[📝 Extract Japanese Text (Manga OCR)]
+    C --> D[🌐 Translate to English (Google Gemini API)]
+    D --> E[🧹 Clean Bubble (Inpainting)]
+    E --> F[✍️ Typeset English Text]
+    F --> G[📄 Output: Translated Manga Page]
 ```
 
 ---
@@ -63,7 +63,7 @@ flowchart TD
 
 1. **Clone the Repository Locally**
    ```bash
-   git clone https://github.com/your-username/Colorless-Manga-Translator.git
+   git clone https://github.com/MICHAELLO29/Colorless-Manga-Translator.git
    cd Colorless-Manga-Translator
    ```
 2. **Install Requirements**
