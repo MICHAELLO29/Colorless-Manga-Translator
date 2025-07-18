@@ -4,7 +4,9 @@
 
 ---
 
-> ⚠️ **Reminder:** This tool is designed for colorless (black-and-white) manga. For colored manga, it will only translate the text if the speech bubble or the background of the text is white. If the background is not white, detection and inpainting may not work correctly.
+> ⚠️ **Reminder:**
+> - This tool is designed for colorless (black-and-white) manga. For colored manga, it will only translate the text if the speech bubble or the background of the text is white. If the background is not white, detection and inpainting may not work correctly.
+> - Some translated text may become larger or overlap inside the speech bubbles, especially if the English translation is much longer than the original Japanese text. Manual adjustment may be needed for perfect results.
 
 ---
 
@@ -18,12 +20,12 @@
 
 ```mermaid
 flowchart TD
-    A[🖼️ Input Manga Page] --> B[🔍 Detect Speech Bubbles (YOLOv5)]
-    B --> C[📝 Extract Japanese Text (Manga OCR)]
-    C --> D[🌐 Translate to English (Google Gemini API)]
-    D --> E[🧹 Clean Bubble (Inpainting)]
-    E --> F[✍️ Typeset English Text]
-    F --> G[📄 Output: Translated Manga Page]
+    A[Input Manga Page] --> B[Detect Speech Bubbles (YOLOv5)]
+    B --> C[Extract Japanese Text (Manga OCR)]
+    C --> D[Translate to English (Google Gemini API)]
+    D --> E[Clean Bubble (Inpainting)]
+    E --> F[Typeset English Text]
+    F --> G[Output: Translated Manga Page]
 ```
 
 ---
@@ -53,24 +55,31 @@ flowchart TD
 
 ---
 
-## 🛠️ **Get Started in 4 Easy Steps**
+## 🛠️ **Get Started in 5 Easy Steps**
 
-> ⚠️ **Note:** This tool is intended for black-and-white manga. For colored manga, it will only work if the speech bubble or text background is white.
+> ⚠️ **Note:**
+> - This tool is intended for black-and-white manga. For colored manga, it will only work if the speech bubble or text background is white.
+> - Some translated text may become larger or overlap inside the bubbles. Manual adjustment may be needed for best results.
 
-1. **Install Requirements**
+1. **Clone the Repository Locally**
+   ```bash
+   git clone https://github.com/your-username/Colorless-Manga-Translator.git
+   cd Colorless-Manga-Translator
+   ```
+2. **Install Requirements**
    ```bash
    pip install -r "Final Translator/Manga Speech Bubble Detection.v3i.yolov5pytorch/yolov5/requirements.txt"
    pip install manga-ocr google-generativeai
    ```
-2. **Get Your Free Google Gemini API Key**
+3. **Get Your Free Google Gemini API Key**
    - Go to [Google AI Studio](https://aistudio.google.com/app/apikey)
    - Sign in, create an API key, and paste it into `Colorless_translate.py`:
      ```python
      API_KEY = "YOUR_API_KEY_HERE"
      ```
-3. **Add Manga Images**
+4. **Add Manga Images**
    - Place your manga pages in `Final Translator/manga pages/`
-4. **Run the Translator!**
+5. **Run the Translator!**
    ```bash
    python Final Translator/Colorless_translate.py
    ```
@@ -108,4 +117,3 @@ flowchart TD
 
 ---
 
-> **Ready to bring your favorite manga to a global audience? Try Colorless-Manga-Translator today!**
