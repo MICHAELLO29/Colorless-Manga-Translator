@@ -1,2 +1,111 @@
-# Colorless-Manga-Translator
-This repository is for educational purpose only. Used Yolov5 for detecting bubble spech
+# 🎨 Colorless-Manga-Translator
+
+> **Automate manga translation from Japanese to English with AI — from bubble detection to typeset output!**
+
+---
+
+> ⚠️ **Reminder:** This tool is designed for colorless (black-and-white) manga. For colored manga, it will only translate the text if the speech bubble or the background of the text is white. If the background is not white, detection and inpainting may not work correctly.
+
+---
+
+## ✨ What is Colorless-Manga-Translator?
+
+> **Colorless-Manga-Translator** is your all-in-one, open-source toolkit for turning raw Japanese manga pages into beautifully typeset English versions — automatically! Whether you're a manga fan, scanlator, or researcher, this project saves you hours of manual work and delivers professional results.
+
+---
+
+## 🚀 **How It Works: The Magic Pipeline**
+
+```mermaid
+flowchart TD
+    A[🖼️ Input Manga Page] --> B[🔍 Detect Speech Bubbles (YOLOv5)]
+    B --> C[📝 Extract Japanese Text (Manga OCR)]
+    C --> D[🌐 Translate to English (Google Gemini API)]
+    D --> E[🧹 Clean Bubble (Inpainting)]
+    E --> F[✍️ Typeset English Text]
+    F --> G[📄 Output: Translated Manga Page]
+```
+
+---
+
+## 🏆 **Why You'll Love This Project**
+
+- **⚡ Fully Automated:** Just drop your manga images in, and get translated, typeset pages out!
+- **🎯 High Accuracy:** Custom-trained YOLOv5 model for manga speech bubbles.
+- **🈶 Specialized OCR:** Extracts even handwritten or stylized Japanese text.
+- **💬 Natural Translations:** Uses Google Gemini AI for context-aware, colloquial English.
+- **🖋️ Professional Typesetting:** Clean, readable, manga-style fonts.
+- **🔓 100% Free & Open Source:** No paywalls, no locked features.
+- **🔧 Extensible:** Tweak, retrain, or swap components as you wish.
+
+---
+
+## 📦 **Folder Structure at a Glance**
+
+| Folder/File | Purpose |
+|-------------|---------|
+| `Final Translator/Colorless_translate.py` | Main script: run this to translate manga |
+| `Final Translator/manga pages/` | Put your input manga images here |
+| `Final Translator/output/` | Translated, typeset manga pages appear here |
+| `Final Translator/fonts/` | Fonts for typesetting (e.g., animeace2_reg.ttf) |
+| `Final Translator/best.pt` | YOLOv5 model weights for bubble detection |
+| `Final Translator/Manga Speech Bubble Detection.v3i.yolov5pytorch/` | Training code, dataset, and YOLOv5 files |
+
+---
+
+## 🛠️ **Get Started in 4 Easy Steps**
+
+> ⚠️ **Note:** This tool is intended for black-and-white manga. For colored manga, it will only work if the speech bubble or text background is white.
+
+1. **Install Requirements**
+   ```bash
+   pip install -r "Final Translator/Manga Speech Bubble Detection.v3i.yolov5pytorch/yolov5/requirements.txt"
+   pip install manga-ocr google-generativeai
+   ```
+2. **Get Your Free Google Gemini API Key**
+   - Go to [Google AI Studio](https://aistudio.google.com/app/apikey)
+   - Sign in, create an API key, and paste it into `Colorless_translate.py`:
+     ```python
+     API_KEY = "YOUR_API_KEY_HERE"
+     ```
+3. **Add Manga Images**
+   - Place your manga pages in `Final Translator/manga pages/`
+4. **Run the Translator!**
+   ```bash
+   python Final Translator/Colorless_translate.py
+   ```
+   - Your translated pages will appear in `Final Translator/output/`
+
+---
+
+## 💡 **How Does Each Step Work?**
+
+- **Speech Bubble Detection:**
+  - YOLOv5 finds all speech bubbles, even in complex layouts.
+- **Japanese Text Extraction:**
+  - Manga OCR reads both printed and handwritten Japanese text.
+- **Translation:**
+  - Google Gemini API translates with context, not just word-for-word.
+- **Typesetting:**
+  - The script erases the original text and redraws the English translation in a manga-style font.
+
+---
+
+## 🧠 **About the Free API**
+
+- **Google Gemini API** is used for translation.
+- You can use it for free (with usage limits) by creating a Google account and generating an API key.
+- No paid subscription required for basic use!
+
+---
+
+## 📚 **Credits & Licenses**
+
+- **YOLOv5:** [Ultralytics YOLOv5](https://github.com/ultralytics/yolov5) (AGPL-3.0)
+- **Manga OCR:** [kha-white/manga-ocr](https://github.com/kha-white/manga-ocr)
+- **Google Gemini API:** [google-generativeai](https://github.com/google/generative-ai-python)
+- **Dataset:** Provided by Roboflow user ([details](Final%20Translator/Manga%20Speech%20Bubble%20Detection.v3i.yolov5pytorch/README.dataset.txt))
+
+---
+
+> **Ready to bring your favorite manga to a global audience? Try Colorless-Manga-Translator today!**
