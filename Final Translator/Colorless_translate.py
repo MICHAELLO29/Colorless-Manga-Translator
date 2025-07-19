@@ -19,7 +19,7 @@ OUTPUT_FOLDER = "output"
 YOLO_MODEL_PATH = "best.pt"
 
 # --- GEMINI API SETUP ---
-API_KEY = "AIzaSyCslo93VpAIooUQ8su7Oq5kH7r2d8mrFK0"  # <--- PASTE YOUR GOOGLE AI STUDIO KEY HERE
+API_KEY = ""  # <--- PASTE YOUR GOOGLE AI STUDIO KEY HERE
 if API_KEY == "YOUR_API_KEY_HERE":
     print("FATAL ERROR: Please replace 'YOUR_API_KEY_HERE' with your API key."); exit()
 genai.configure(api_key=API_KEY)
