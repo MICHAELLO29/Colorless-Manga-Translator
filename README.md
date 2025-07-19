@@ -78,6 +78,7 @@ Follow these steps to understand how the Colorless-Manga-Translator processes yo
 > - This tool is intended for black-and-white manga. For colored manga, it will only work if the speech bubble or text background is white.
 > - Some translated text may become larger or overlap inside the bubbles. Manual adjustment may be needed for best results.
 > - I use python 3.11.x for the script to work. Some of the libraries are not compatible in the new python version.
+> - I tried to use it more in some manga pages and I see that the best font size is 14 whether the japanese texts are long it will fit inside the speech bubble text if its converted to english. Well you can adjust it to you font size. 
 
 1. **Clone the Repository Locally**
    ```bash

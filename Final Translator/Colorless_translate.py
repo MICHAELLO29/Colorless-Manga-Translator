@@ -13,7 +13,7 @@ print("--- Professional Manga Translator Script (Definitive Version) ---")
 # --- CONFIGURATION ---
 FONT_PATH = "fonts/animeace2_reg.ttf"
 # This is now the MAXIMUM font size. The script will shrink from here if needed.
-FONT_SIZE = 10 #Adjust the font size based on your preferences
+FONT_SIZE = 14 #Adjust the font size based on your preferences
 INPUT_FOLDER = "manga pages"
 OUTPUT_FOLDER = "output"
 YOLO_MODEL_PATH = "best.pt"
