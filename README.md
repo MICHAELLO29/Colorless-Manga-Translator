@@ -83,7 +83,8 @@ Follow these steps to understand how the Colorless-Manga-Translator processes yo
    ```bash
    git clone https://github.com/MICHAELLO29/Colorless-Manga-Translator.git
    cd Colorless-Manga-Translator
-   ```2. **Install Requirements**
+   ```
+2. **Install Requirements**
    ```bash
    pip install -r "Final Translator/Manga Speech Bubble Detection.v3i.yolov5pytorch/yolov5/requirements.txt"
    pip install manga-ocr google-generativeai
