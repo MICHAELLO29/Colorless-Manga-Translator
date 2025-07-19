@@ -106,10 +106,7 @@ Follow these steps to understand how the Colorless-Manga-Translator processes yo
 > **Sample Provided:**
 > - I created a sample manga image for you to try out! You can find it in the `Final Translator/manga pages/` folder. After running the translator, the output of this sample can be seen in the `Final Translator/output/` folder.
 >
->   ```markdown
->   ![Translated Manga Page](Final%20Translator/output/1.png
->   ```
-
+>   ![Translated Manga Page](Final%20Translator/output/1.png)
 ---
 
 ## 💡 **How Does Each Step Work?**
