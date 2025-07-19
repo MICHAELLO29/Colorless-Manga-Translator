@@ -7,7 +7,7 @@
 > ⚠️ **Reminder:**
 > - This tool is designed for colorless (black-and-white) manga. For colored manga, it will only translate the text if the speech bubble or the background of the text is white. If the background is not white, detection and inpainting may not work correctly.
 > - Some translated text may become larger or overlap inside the speech bubbles, especially if the English translation is much longer than the original Japanese text. Manual adjustment may be needed for perfect results.
-> - Use this script if the run button didnt work in vs code:
+> - Use this script in terminal if the run button didnt work in vs code:
 ```bash
    cd "Final Translator"
    py -3.11 Colorless_translate.py
