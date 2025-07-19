@@ -11,15 +11,15 @@ import re
 print("--- Professional Manga Translator Script (Definitive Version) ---")
 
 # --- CONFIGURATION ---
-FONT_PATH = r"C:\Users\Miggy\Documents\Final Translator\fonts\animeace2_reg.ttf"
-FONT_SIZE = 28
-FONT_SCALE_FACTOR = 0.9 # Changed from 1.1 to a more appropriate value.
+FONT_PATH = "fonts/animeace2_reg.ttf"
+# This is now the MAXIMUM font size. The script will shrink from here if needed.
+FONT_SIZE = 10 #Adjust the font size based on your preferences
 INPUT_FOLDER = "manga pages"
 OUTPUT_FOLDER = "output"
-YOLO_MODEL_PATH = r"C:\Users\Miggy\Documents\Final Translator\best.pt"
+YOLO_MODEL_PATH = "best.pt"
 
 # --- GEMINI API SETUP ---
-API_KEY = ""  # <--- PASTE YOUR GOOGLE AI STUDIO KEY HERE
+API_KEY = "AIzaSyCslo93VpAIooUQ8su7Oq5kH7r2d8mrFK0"  # <--- PASTE YOUR GOOGLE AI STUDIO KEY HERE
 if API_KEY == "YOUR_API_KEY_HERE":
     print("FATAL ERROR: Please replace 'YOUR_API_KEY_HERE' with your API key."); exit()
 genai.configure(api_key=API_KEY)
@@ -43,27 +43,29 @@ def detect_bubbles(image_cv):
             x, y, x2, y2 = map(int, det[:4]); bubbles.append((x, y, x2 - x, y2 - y))
     return bubbles
 
-def draw_adaptive_text_in_box(draw, text, box, font_path, initial_font_size):
-    """Draws text, shrinking font size until it fits the box."""
+def draw_text_in_box(draw, text, box, font_path, max_font_size):
+    """Draws text, shrinking font size from a maximum until it fits the box."""
     x, y, w, h = box
     padding = 10 # Increased padding for a cleaner look
     if w <= padding * 2 or h <= padding * 2: return
     w -= padding * 2; h -= padding * 2
     x += padding; y += padding
 
-    font_size = initial_font_size
+    font_size = max_font_size # Start with the maximum allowed font size
     while font_size > 5:
         font = ImageFont.truetype(font_path, font_size)
-        try: avg_char_width = font.getlength('A')
-        except AttributeError: (width, _), avg_char_width = font.getsize("A"), width
+        try:
+            avg_char_width = font.getlength('A')
+        except AttributeError:
+            avg_char_width = font.getbbox('A')[2]
 
         chars_per_line = max(1, w // avg_char_width if avg_char_width > 0 else 1)
         wrapped_text = textwrap.fill(text, width=int(chars_per_line))
         text_bbox = draw.multiline_textbbox((0, 0), wrapped_text, font=font)
         text_w, text_h = text_bbox[2] - text_bbox[0], text_bbox[3] - text_bbox[1]
 
-        if text_w < w and text_h < h: break
-        font_size -= 1
+        if text_w < w and text_h < h: break # Font fits, exit the loop
+        font_size -= 1 # Font is too big, shrink it and try again
     else:
         print(f"    Warning: Could not fit text properly. Final font size: {font_size}")
 
@@ -99,15 +101,13 @@ def sort_and_filter_bubbles(boxes, iou_threshold=0.8, y_tolerance_ratio=0.5):
     return [box for row in rows for box in row]
 
 def analyze_text_and_get_properties(bubble_roi_cv):
+    """Simplified function: gets Japanese text and the text mask."""
     gray_roi = cv2.cvtColor(bubble_roi_cv, cv2.COLOR_BGR2GRAY)
     text_mask = cv2.adaptiveThreshold(gray_roi, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                       cv2.THRESH_BINARY_INV, 11, 4)
     bubble_pil = Image.fromarray(cv2.cvtColor(bubble_roi_cv, cv2.COLOR_BGR2RGB))
     japanese_text = mocr(bubble_pil)
-    contours, _ = cv2.findContours(text_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    char_heights = [cv2.boundingRect(c)[3] for c in contours]
-    avg_char_height = np.mean([h for h in char_heights if h > 5]) if any(h > 5 for h in char_heights) else 0
-    return japanese_text, avg_char_height, text_mask
+    return japanese_text, text_mask
 
 def create_precise_bubble_mask(bubble_roi_cv):
     gray_roi = cv2.cvtColor(bubble_roi_cv, cv2.COLOR_BGR2GRAY)
@@ -128,8 +128,9 @@ def translate_entire_page(text_list):
         response = gemini_model.generate_content(prompt)
         translations = [t.strip() for t in response.text.split('|||')]
         if len(translations) == len(text_list): return translations
-        else: return [translate_text_gemini(text) for text in text_list]
+        else: return [translate_text_gemini(text) for text in text_list] 
     except Exception: return [translate_text_gemini(text) for text in text_list]
+
 def translate_text_gemini(text):
     prompt = f"Translate to natural English: \"{text}\""
     try: response = gemini_model.generate_content(prompt); return response.text.strip()
@@ -137,6 +138,7 @@ def translate_text_gemini(text):
 
 # --- CORE PROCESSING LOGIC ---
 def process_image(image_path, output_path):
+    print(f"--- DEBUG: Starting to process image with FONT_SIZE = {FONT_SIZE} ---")
     print(f"\nProcessing image: {image_path}")
     original_cv = cv2.imread(image_path)
     if original_cv is None: print(f"❌ Could not read image: {image_path}"); return
@@ -146,12 +148,17 @@ def process_image(image_path, output_path):
     all_bubbles = detect_bubbles(original_cv)
     all_bubbles = sort_and_filter_bubbles(all_bubbles)
     if not all_bubbles: print(" -> No bubbles found."); cv2.imwrite(output_path, original_cv); return
+
     page_data = []
     for i, box in enumerate(all_bubbles):
-        japanese_text, avg_jp_height, text_mask = analyze_text_and_get_properties(original_cv[box[1]:box[1]+box[3], box[0]:box[0]+box[2]])
+        # The function now returns only the text and mask
+        japanese_text, text_mask = analyze_text_and_get_properties(original_cv[box[1]:box[1]+box[3], box[0]:box[0]+box[2]])
+        # Skip if no Japanese characters are detected
         if not re.search(r'[ぁ-んァ-ン一-龯]', japanese_text): continue
-        print(f" -> Found Block #{i+1}: '{japanese_text}' (Avg Char Height: {avg_jp_height:.1f}px)")
-        page_data.append({'box': box, 'text': japanese_text, 'jp_height': avg_jp_height, 'text_mask': text_mask})
+        print(f" -> Found Block #{i+1}: '{japanese_text}'")
+        # Store the simplified data
+        page_data.append({'box': box, 'text': japanese_text, 'text_mask': text_mask})
+
     if not page_data: print(" -> No valid text found."); cv2.imwrite(output_path, original_cv); return
 
     # Translation
@@ -168,10 +175,11 @@ def process_image(image_path, output_path):
         bubble_roi = final_cv[y:y+h, x:x+w]
 
         precise_bubble_mask = create_precise_bubble_mask(bubble_roi)
-        if precise_bubble_mask is None: precise_bubble_mask = 255
+        if precise_bubble_mask is None:
+            # If a precise bubble can't be found, use a plain white mask
+            precise_bubble_mask = np.full(bubble_roi.shape[:2], 255, dtype=np.uint8)
 
         inpaint_mask = cv2.bitwise_and(item['text_mask'], precise_bubble_mask)
-        # Use a slightly larger kernel for more effective cleaning of text "ghosts"
         kernel = np.ones((3,3), np.uint8)
         inpaint_mask = cv2.dilate(inpaint_mask, kernel, iterations=2)
 
@@ -181,8 +189,8 @@ def process_image(image_path, output_path):
     final_pil = Image.fromarray(cv2.cvtColor(final_cv, cv2.COLOR_BGR2RGB))
     final_draw = ImageDraw.Draw(final_pil)
     for item in page_data:
-        initial_font_size = int(item['jp_height'] * FONT_SCALE_FACTOR) if item['jp_height'] > 0 else FONT_SIZE
-        draw_adaptive_text_in_box(final_draw, item['english'], item['box'], FONT_PATH, initial_font_size)
+        # The function is called with the global FONT_SIZE as the maximum size
+        draw_text_in_box(final_draw, item['english'], item['box'], FONT_PATH, FONT_SIZE)
 
     final_pil.save(output_path, "PNG")
     print(f"\n✅ Finished and saved: {output_path}")
@@ -190,9 +198,12 @@ def process_image(image_path, output_path):
 # --- MAIN EXECUTION ---
 def main():
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-    for filename in sorted(os.listdir(INPUT_FOLDER)):
-        if filename.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
-            process_image(os.path.join(INPUT_FOLDER, filename), os.path.join(OUTPUT_FOLDER, f"{os.path.splitext(filename)[0]}.png"))
+    image_files = sorted([f for f in os.listdir(INPUT_FOLDER) if f.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))])
+    for filename in image_files:
+        input_path = os.path.join(INPUT_FOLDER, filename)
+        output_filename = f"{os.path.splitext(filename)[0]}.png"
+        output_path = os.path.join(OUTPUT_FOLDER, output_filename)
+        process_image(input_path, output_path)
 
 if __name__ == "__main__":
     main()

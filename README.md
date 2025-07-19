@@ -7,7 +7,10 @@
 > ⚠️ **Reminder:**
 > - This tool is designed for colorless (black-and-white) manga. For colored manga, it will only translate the text if the speech bubble or the background of the text is white. If the background is not white, detection and inpainting may not work correctly.
 > - Some translated text may become larger or overlap inside the speech bubbles, especially if the English translation is much longer than the original Japanese text. Manual adjustment may be needed for perfect results.
-
+> - Use this script if the run button didnt work in vs code:
+```bash
+   py -3.11 Colorless_translate.py
+   ```
 ---
 
 ## ✨ What is Colorless-Manga-Translator?
@@ -73,13 +76,13 @@ Follow these steps to understand how the Colorless-Manga-Translator processes yo
 > ⚠️ **Note:**
 > - This tool is intended for black-and-white manga. For colored manga, it will only work if the speech bubble or text background is white.
 > - Some translated text may become larger or overlap inside the bubbles. Manual adjustment may be needed for best results.
+> - I use python 3.11.x for the script to work. Some of the libraries are not compatible in the new python version.
 
 1. **Clone the Repository Locally**
    ```bash
    git clone https://github.com/MICHAELLO29/Colorless-Manga-Translator.git
    cd Colorless-Manga-Translator
-   ```
-2. **Install Requirements**
+   ```2. **Install Requirements**
    ```bash
    pip install -r "Final Translator/Manga Speech Bubble Detection.v3i.yolov5pytorch/yolov5/requirements.txt"
    pip install manga-ocr google-generativeai
@@ -97,6 +100,18 @@ Follow these steps to understand how the Colorless-Manga-Translator processes yo
    python Final Translator/Colorless_translate.py
    ```
    - Your translated pages will appear in `Final Translator/output/`
+
+---
+
+> **Sample Provided:**
+> - I created a sample manga image for you to try out! You can find it in the `Final Translator/manga pages/` folder. After running the translator, the output of this sample can be seen in the `Final Translator/output/` folder.
+>
+> **How to Insert an Image in Markdown:**
+> - To display an image (for example, your translated manga page) in your README or any markdown file, use the following syntax:
+>   ```markdown
+>   ![Description](Final%20Translator/output/1.png)
+>   ```
+>   Replace `1.png` with your actual output file name if different. This will show the image directly in supported markdown viewers.
 
 ---
 
@@ -129,4 +144,10 @@ Follow these steps to understand how the Colorless-Manga-Translator processes yo
 - **Dataset:** Provided by Roboflow user ([details](Final%20Translator/Manga%20Speech%20Bubble%20Detection.v3i.yolov5pytorch/README.dataset.txt))
 
 ---
+
+## 🔮 **Future Work**
+
+- **User-Friendly GUI or Website:**
+  - I plan to develop a graphical user interface (GUI) or a web-based platform that allows users to simply drag and drop their manga images for translation. This will make the tool even more portable and hassle-free, removing the need to use command-line scripts. The goal is to make manga translation accessible to everyone, regardless of technical background—just upload your images and get instant, beautifully typeset English manga pages!
+
 
