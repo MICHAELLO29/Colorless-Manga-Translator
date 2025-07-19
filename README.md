@@ -106,12 +106,9 @@ Follow these steps to understand how the Colorless-Manga-Translator processes yo
 > **Sample Provided:**
 > - I created a sample manga image for you to try out! You can find it in the `Final Translator/manga pages/` folder. After running the translator, the output of this sample can be seen in the `Final Translator/output/` folder.
 >
-> **How to Insert an Image in Markdown:**
-> - To display an image (for example, your translated manga page) in your README or any markdown file, use the following syntax:
 >   ```markdown
->   ![Description](Final%20Translator/output/1.png)
+>   ![Translated Manga Page](Final%20Translator/output/1.png
 >   ```
->   Replace `1.png` with your actual output file name if different. This will show the image directly in supported markdown viewers.
 
 ---
 
