@@ -24,18 +24,16 @@ An AI-powered manga translation pipeline that automatically detects Japanese tex
 
 ## Sample Output
 
-### Original Page
-![Original Manga Page](Final%20Translator/manga%20pages/1.png)
-
-### Translated Page
-![Translated Manga Page](Final%20Translator/output/2.png)
+| Original | Translated |
+|:---:|:---:|
+| ![Original](Final%20Translator/manga%20pages/1.png) | ![Translated](Final%20Translator/output/2.png) |
 
 ---
 
 ## Prerequisites
 
 - **Python 3.11.x** (recommended — other versions may have compatibility issues)
-- **Google Gemini API Key** — Free from [Google AI Studio](https://aistudio.google.com/app/apikey)
+- **Google Gemini API Key** — Free from [Google AI Studio](https://aistudio.google.com/app/apikey) (entered in the web interface, not in `.env`)
 - **Roboflow API Key** — Free from [Roboflow](https://app.roboflow.com/) (1,000 inferences/month on free tier)
 
 ---
@@ -57,26 +55,25 @@ pip install -r requirements.txt
 
 > **Note:** First run will automatically download the manga-ocr model (~400MB). This only happens once.
 
-### 3. Configure API Keys
+### 3. Configure Roboflow API Key
 
 Create a `.env` file in the `Final Translator/` directory:
 
 ```env
-# Google Gemini API Key (required for translation)
-GEMINI_API_KEY=your_gemini_api_key_here
-
 # Roboflow Cloud Detection (required for text detection)
 ROBOFLOW_API_KEY=your_roboflow_api_key_here
 USE_ROBOFLOW=true
 ROBOFLOW_MODEL_ID=bubble-text-detector-k5qgg/1
 ```
 
+> **Note:** The Google Gemini API key is entered directly in the web interface — you do **not** need to add it to `.env`.
+
 **How to get your keys:**
 
-| Key | Where to Get It | Free Tier |
-|-----|----------------|-----------|
-| Gemini API Key | [Google AI Studio](https://aistudio.google.com/app/apikey) | 1,500 requests/day |
-| Roboflow API Key | [Roboflow Dashboard](https://app.roboflow.com/) → Settings → API Keys | 1,000 inferences/month |
+| Key | Where to Get It | Free Tier | How to Use |
+|-----|----------------|-----------|------------|
+| Gemini API Key | [Google AI Studio](https://aistudio.google.com/app/apikey) | 1,500 requests/day | Paste in the web GUI |
+| Roboflow API Key | [Roboflow Dashboard](https://app.roboflow.com/) → Settings → API Keys | 1,000 inferences/month | Add to `.env` file |
 
 ### 4. Run the Application
 
