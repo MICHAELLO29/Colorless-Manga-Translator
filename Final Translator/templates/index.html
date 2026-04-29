@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colorless Manga Translator</title>
-    <meta name="description" content="AI-powered manga translation from Japanese to English — YOLOv8 detection, MangaOCR, and Google Gemini">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <meta name="description" content="AI-powered manga translation from Japanese to English — Roboflow detection, MangaOCR, and Google Gemini">
+    <link rel="icon" type="image/png" href="/static/manga_icon.png">
+    <link rel="apple-touch-icon" href="/static/manga_icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         /* ═══════════════════════════════════════════════════════════════
            DESIGN SYSTEM
@@ -17,14 +19,18 @@
             --bg-card-hover: #22222f;
             --bg-glass: rgba(26, 26, 40, 0.75);
             --border: rgba(255, 255, 255, 0.06);
-            --border-active: rgba(139, 92, 246, 0.4);
+            --border-active: rgba(220, 50, 220, 0.4);
             --text-primary: #f0f0f5;
             --text-secondary: #9ca3af;
             --text-muted: #6b7280;
-            --accent: #8b5cf6;
-            --accent-bright: #a78bfa;
-            --accent-dim: #6d28d9;
-            --accent-glow: rgba(139, 92, 246, 0.15);
+            --accent: #d946ef;
+            --accent-bright: #e879f9;
+            --accent-dim: #a21caf;
+            --accent-glow: rgba(217, 70, 239, 0.15);
+            --accent-secondary: #06b6d4;
+            --accent-secondary-bright: #22d3ee;
+            --gradient-brand: linear-gradient(135deg, #d946ef, #8b5cf6, #06b6d4);
+            --gradient-button: linear-gradient(135deg, #d946ef, #8b5cf6);
             --success: #34d399;
             --success-dim: rgba(52, 211, 153, 0.15);
             --error: #f87171;
@@ -48,7 +54,7 @@
             overflow-x: hidden;
         }
 
-        /* Animated background gradient */
+        /* Animated background gradient - manga themed */
         body::before {
             content: '';
             position: fixed;
@@ -56,15 +62,29 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(ellipse at 20% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
-                        radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
-                        radial-gradient(ellipse at 50% 80%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(217, 70, 239, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 40%),
+                url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='1'/%3E%3Ccircle cx='13' cy='13' r='1'/%3E%3C/g%3E%3C/svg%3E");
             z-index: -1;
-            animation: bgFloat 20s ease-in-out infinite alternate;
+            animation: bgFloat 30s ease-in-out infinite alternate;
         }
+        
+        /* Paper texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
         @keyframes bgFloat {
             0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(-2%, -2%) rotate(1deg); }
+            100% { transform: translate(-2%, -2%) rotate(0.5deg); }
         }
 
         /* ═══ HEADER ═══ */
@@ -86,22 +106,31 @@
             gap: 14px;
         }
         .logo {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--accent), #6366f1);
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 0 20px var(--accent-glow);
+            overflow: hidden;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 12px rgba(217, 70, 239, 0.4));
+            transition: var(--transition);
         }
+        .logo:hover { filter: drop-shadow(0 0 18px rgba(217, 70, 239, 0.6)); transform: scale(1.05); }
+        .logo img { width: 100%; height: 100%; object-fit: contain; }
         .header h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-top: 4px;
         }
-        .header h1 span { color: var(--accent-bright); }
+        .header h1 span {
+            background: var(--gradient-brand);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 5px rgba(217, 70, 239, 0.2));
+        }
         .header-right {
             display: flex;
             align-items: center;
@@ -142,24 +171,22 @@
         /* ═══ API KEY SETUP ═══ */
         .setup-banner {
             background: var(--bg-card);
-            border: 1px solid var(--border-active);
-            border-radius: var(--radius);
+            border: 2px solid #000;
+            box-shadow: 6px 6px 0px rgba(0,0,0,1);
+            border-radius: var(--radius-sm);
             padding: 24px 28px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
             display: none;
             animation: slideDown 0.3s ease;
+            position: relative;
         }
         .setup-banner.visible { display: block; }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
         .setup-banner h3 {
-            font-size: 1rem;
+            font-family: 'Bangers', cursive;
+            font-size: 1.4rem;
+            letter-spacing: 0.03em;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: var(--accent-bright);
         }
         .setup-banner p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 14px; }
         .key-input-row {
@@ -168,17 +195,17 @@
         }
         .key-input-row input {
             flex: 1;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
+            background: #000;
+            border: 2px solid var(--border);
             border-radius: var(--radius-sm);
-            padding: 10px 14px;
+            padding: 12px 16px;
             color: var(--text-primary);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
             outline: none;
             transition: var(--transition);
         }
-        .key-input-row input:focus { border-color: var(--accent); }
+        .key-input-row input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
         .key-input-row input::placeholder { color: var(--text-muted); }
 
         /* ═══ BUTTONS ═══ */
@@ -197,13 +224,13 @@
             white-space: nowrap;
         }
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent), #6366f1);
+            background: var(--accent);
             color: #fff;
-            box-shadow: 0 2px 12px var(--accent-glow);
+            border: 2px solid #000;
         }
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 0px #000;
         }
         .btn-primary:active { transform: translateY(0); }
         .btn-primary:disabled {
@@ -232,20 +259,41 @@
             gap: 10px;
         }
         .upload-zone {
-            border: 2px dashed var(--border);
+            border: 3px dashed var(--border);
             border-radius: var(--radius);
-            padding: 48px 32px;
+            padding: 64px 32px;
             text-align: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background: var(--bg-card);
             position: relative;
+            overflow: hidden;
         }
         .upload-zone:hover, .upload-zone.dragover {
             border-color: var(--accent);
-            background: var(--accent-glow);
+            background: rgba(217, 70, 239, 0.05);
+            transform: scale(1.01);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        .upload-zone .icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .upload-zone::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-brand);
+            opacity: 0.05;
+            filter: blur(40px);
+        }
+        .upload-zone .icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            background: var(--gradient-brand);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
         .upload-zone .title {
             font-size: 1rem;
             font-weight: 600;
@@ -313,11 +361,12 @@
             gap: 8px;
         }
         .control-group label {
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-family: 'Bangers', cursive;
+            font-size: 1rem;
+            font-weight: 400;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
         }
         .control-group select {
             background: var(--bg-card);
@@ -362,12 +411,14 @@
         }
         .image-panel-header {
             padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.8rem;
-            font-weight: 700;
+            border-bottom: 2px solid #000;
+            font-family: 'Bangers', cursive;
+            font-size: 1.1rem;
+            font-weight: 400;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            color: #fff;
+            background: var(--bg-card-hover);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -402,17 +453,19 @@
         }
         .stat-card:hover { border-color: var(--border-active); }
         .stat-card .label {
-            font-size: 0.72rem;
-            font-weight: 700;
+            font-family: 'Bangers', cursive;
+            font-size: 0.9rem;
+            font-weight: 400;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
             color: var(--text-muted);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .stat-card .value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
         }
         .stat-card .value.success { color: var(--success); }
         .stat-card .value.accent { color: var(--accent-bright); }
@@ -470,7 +523,7 @@
         }
         .progress-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent), #6366f1);
+            background: var(--gradient-button);
             border-radius: 2px;
             width: 0%;
             transition: width 0.5s ease;
@@ -522,6 +575,17 @@
         }
         .footer a { color: var(--accent-bright); text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
+        .footer .footer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .footer .footer-brand img {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
 
         /* ═══ QUOTA MODAL ═══ */
         .modal-overlay {
@@ -615,7 +679,7 @@
     <!-- ═══ HEADER ═══ -->
     <header class="header">
         <div class="header-left">
-            <div class="logo">C</div>
+            <div class="logo"><img src="/static/manga_icon.png" alt="Logo"></div>
             <h1>Colorless <span>Manga Translator</span></h1>
         </div>
         <div class="header-right">
@@ -646,7 +710,7 @@
             <h2>Upload Manga Pages</h2>
             <div class="upload-zone" id="uploadZone">
                 <input type="file" id="fileInput" accept="image/*" multiple>
-                <div class="icon" style="font-size:2rem; opacity:0.5;">+</div>
+                <div class="icon">&#x2191;</div>
                 <div class="title">Drop manga pages here or click to browse</div>
                 <div class="subtitle">PNG, JPG, WebP — Single or multiple pages</div>
             </div>
@@ -772,7 +836,11 @@
 
     <!-- Footer -->
     <footer class="footer">
-        Colorless Manga Translator — Powered by YOLOv8, MangaOCR &amp; Google Gemini AI<br>
+        <div class="footer-brand">
+            <img src="/static/manga_icon.png" alt="">
+            <strong>Colorless Manga Translator</strong>
+        </div><br>
+        Powered by Roboflow, MangaOCR &amp; Google Gemini AI<br>
         <a href="https://github.com/MICHAELLO29/Colorless-Manga-Translator" target="_blank">GitHub</a>
     </footer>
 

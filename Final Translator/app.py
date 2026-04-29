@@ -26,7 +26,7 @@ from flask import Flask, render_template, request, jsonify
 # Ensure we can import the colorless_translator package
 sys.path.insert(0, str(Path(__file__).parent))
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='public', static_url_path='/static')
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload
 
 # ─── Per-key translator cache ─────────────────────────────────────────────────
