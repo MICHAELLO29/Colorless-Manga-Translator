@@ -1,0 +1,15 @@
+# World-Class Manga Translator Requirements
+# Install with: pip install -r requirements_worldclass.txt
+
+# Core dependencies (already installed)
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+ultralytics>=8.0.0
+manga-ocr>=0.1.0
+google-generativeai>=0.3.0
+torch>=2.0.0
+torchvision>=0.15.0
+
+# New dependencies for world-class features
+gradio>=4.0.0  # Interactive web GUI

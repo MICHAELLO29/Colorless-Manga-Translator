@@ -1,0 +1,27 @@
+# Colorless Manga Translator Requirements
+# Python 3.11.x is strongly recommended for compatibility
+# Usage: pip install -r requirements.txt
+
+# Core Dependencies -------------------------------------------------------
+opencv-python>=4.1.1
+Pillow>=10.3.0
+numpy>=1.23.5
+manga-ocr
+python-dotenv>=1.0.0
+
+# Gemini AI Translation (new official SDK) ---------------------------------
+google-genai>=1.0.0
+
+# YOLOv8 Detection ---------------------------------------------------------
+ultralytics>=8.2.64
+torch>=1.8.0
+torchvision>=0.9.0
+
+# Web GUI ------------------------------------------------------------------
+flask>=3.0.0
+
+# Additional Utilities ----------------------------------------------------
+PyYAML>=5.3.1
+tqdm>=4.66.3
+requests>=2.32.2
+setuptools>=70.0.0

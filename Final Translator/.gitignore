@@ -1,0 +1,27 @@
+# Environment variables (contains API keys)
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Manga files
+manga\ pages/
+
+# Output files
+output/
+
+# Cache files
+translation_cache.json
+series_memory.json
+
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
