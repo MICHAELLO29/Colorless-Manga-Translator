@@ -391,38 +391,49 @@ class TranslationPipeline:
 
             group = [block_a]
             used.add(i)
-            xa, ya, wa, ha = block_a.box
 
             # Iteratively find neighbours of the growing group
             changed = True
             while changed:
                 changed = False
-                # Current group bounding box
-                g_x1 = min(b.box[0] for b in group)
-                g_y1 = min(b.box[1] for b in group)
-                g_x2 = max(b.box[0] + b.box[2] for b in group)
-                g_y2 = max(b.box[1] + b.box[3] for b in group)
-                g_h = g_y2 - g_y1
 
                 for j, block_b in enumerate(blocks):
                     if j in used:
                         continue
                     xb, yb, wb, hb = block_b.box
-
-                    # Vertical overlap check
-                    y_overlap = min(g_y2, yb + hb) - max(g_y1, yb)
-                    if y_overlap < min(g_h, hb) * 0.25:
-                        continue
-
-                    # Horizontal proximity check
-                    x_gap = max(0, max(g_x1, xb) - min(g_x2, xb + wb))
-                    max_w = max(g_x2 - g_x1, wb)
-                    if x_gap > max_w * 0.6:
-                        continue
-
-                    group.append(block_b)
-                    used.add(j)
-                    changed = True
+                    
+                    is_close = False
+                    for block_in_group in group:
+                        xa, ya, wa, ha = block_in_group.box
+                        
+                        # 1. Vertical overlap check
+                        y_overlap = min(ya + ha, yb + hb) - max(ya, yb)
+                        if y_overlap < min(ha, hb) * 0.25:
+                            continue
+                            
+                        # 2. Similar width check (same font size)
+                        # Columns in the same bubble generally have similar widths
+                        if max(wa, wb) > min(wa, wb) * 1.8:
+                            continue
+                            
+                        # 3. Horizontal proximity check
+                        # Gap should be small compared to the text column width
+                        x_gap = max(0, max(xa, xb) - min(xa + wa, xb + wb))
+                        if x_gap > min(wa, wb) * 1.2:
+                            continue
+                            
+                        # 4. Top-alignment check
+                        # Columns in the same bubble usually start near each other vertically
+                        if abs(ya - yb) > max(ha, hb) * 0.5:
+                            continue
+                            
+                        is_close = True
+                        break
+                        
+                    if is_close:
+                        group.append(block_b)
+                        used.add(j)
+                        changed = True
 
             groups.append(group)
 
